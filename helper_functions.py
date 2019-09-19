@@ -7,6 +7,9 @@ plt.style.use('ggplot')
 import requests
 from bs4 import BeautifulSoup
 
+from sklearn.metrics import recall_score, accuracy_score, roc_curve, auc, confusion_matrix
+from sklearn.model_selection import train_test_split, GridSearchCV
+
 ### FUNCTIONS USED IN THE EDA PROCCES
 
 def populate_df(df):
@@ -137,3 +140,34 @@ def plot_feature_importance(model, x_train, n=30):
     plt.xlabel("Feature Importance")
     plt.ylabel("Feature")
     return
+
+def find_optimal_depth(x_train, x_test, y_train, y_test):   
+    #declare variables
+    max_depths = np.linspace(1, 20, 20, endpoint=True)
+    train_results = []
+    test_results = []
+    # iterate over the different depths
+    for depth in max_depths:
+        trees = DecisionTreeClassifier(criterion='entropy', max_depth=depth)
+        trees.fit(x_train, y_train)
+        
+        # Add auc score to train list
+        train_pred = trees.predict(x_train)
+        fpr, tpr, thresholds = roc_curve(y_train, train_pred)
+        roc_auc = auc(fpr, tpr)
+        train_results.append(roc_auc)
+        
+        # Add auc score to test list
+        test_pred = trees.predict(x_test)
+        fpr, tpr, thresholds = roc_curve(y_test, test_pred)
+        roc_auc = auc(fpr, tpr)
+        test_results.append(roc_auc)
+        
+    plt.figure(figsize=(10,7))
+    plt.plot(max_depths, train_results, 'b', label='Train AUC')
+    plt.plot(max_depths, test_results, 'r', label='Test AUC')
+    plt.ylabel('AUC score')
+    plt.xlabel('Tree depth')
+    plt.legend()
+    plt.show()
+    pass
