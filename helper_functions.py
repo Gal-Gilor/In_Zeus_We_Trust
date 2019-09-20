@@ -70,6 +70,20 @@ def create_hist(df, column, save=None):
         plt.savefig(f'{column}_Histogram.png')
     pass
 
+
+def team_composition(df, attributes):
+    for attribute in attributes:
+        sns.catplot(kind='count', data=df, x=attribute)
+        plt.title('Composition')
+        plt.xlabel(f"{attribute} Heroes")
+        plt.ylabel(f"Game Count")
+        plt.grid(b=None)
+        try:
+            plt.savefig(f"team_comp_{attribute}.png")
+        except:
+            plt.savefig(f"team_comp_bad_name.png")
+        pass
+
 # FUNCTIONS USED IN THE MODELING PROCCES
 
 
@@ -142,8 +156,9 @@ def plot_feature_importance(model, x_train, n=10):
         plt.barh(sorted_columns[-n:], sorted_feat[-n:], align='center')
 
     plt.yticks(sorted_columns[-n:], sorted_columns[-n:])
-    plt.xlabel("Feature Importance")
-    plt.ylabel("Feature")
+    plt.title('Feature Importances', fontsize=18)
+    plt.xlabel('Feature Importance', fontsize=16)
+    plt.ylabel('Features', fontsize=16)
     return
 
 
@@ -172,8 +187,8 @@ def find_optimal_depth(x_train, x_test, y_train, y_test):
     plt.figure(figsize=(8, 5))
     plt.plot(max_depths, train_results, 'b', label='Train AUC')
     plt.plot(max_depths, test_results, 'r', label='Test AUC')
-    plt.ylabel('AUC score')
-    plt.xlabel('Tree depth')
+    plt.ylabel('AUC score', fontsize=16)
+    plt.xlabel('Tree depth', fontsize=16)
     plt.legend()
     plt.show()
     pass
@@ -191,15 +206,15 @@ def plot_roc_curve(model, x_test, y_test):
     plt.plot(fpr, tpr, color='darkorange',
              label='ROC Curve')
    
-    # plot the line through the origin of axis
+    # plot a line through the origin of axis
     plt.plot([0, 1], [0, 1], color='navy', linestyle='--')
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
     
     
     # add graph labels
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('ROC Curve')
+    plt.xlabel('False Positive Rate', fontsize=16)
+    plt.ylabel('True Positive Rate', fontsize=16)
+    plt.title('ROC Curve', fontsize=118)
     plt.legend(loc="lower right")
     return round(roc_auc_score(y_test, predict_proba), 2)
