@@ -177,3 +177,32 @@ def find_optimal_depth(x_train, x_test, y_train, y_test):
     plt.legend()
     plt.show()
     pass
+
+
+def plot_roc_curve(model, x_test, y_test):
+    ''' This function accepts the model, testing set, testing labels, and outputs
+        a Receiver Operating Characteristic curve plot'''
+    # extract the target probability
+    predict_proba = model.predict_proba(x_test)[:, 1]
+    fpr, tpr, thresh = roc_curve(y_test, predict_proba)
+    auc_score = auc(fpr, tpr)
+    plt.figure(figsize=(8,5))
+    
+    # plot the roc curve
+    plt.plot(fpr, tpr, color='darkorange',
+             lw=2, label='ROC Curve')
+    
+    # plot the line through the origin of axis
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.yticks([i/20.0 for i in range(21)])
+    plt.xticks([i/20.0 for i in range(21)])
+    
+    # add graph labels
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curve')
+    plt.legend(loc="lower right")
+    plt.show()
+    return auc_score
