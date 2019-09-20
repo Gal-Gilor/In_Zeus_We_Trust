@@ -1,6 +1,7 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import recall_score, accuracy_score, roc_curve, auc, confusion_matrix
+from sklearn.metrics import recall_score, accuracy_score, roc_curve, auc, confusion_matrix,
+                            roc_auc_score
 from bs4 import BeautifulSoup
 import requests
 import numpy as np
@@ -184,25 +185,22 @@ def plot_roc_curve(model, x_test, y_test):
         a Receiver Operating Characteristic curve plot'''
     # extract the target probability
     predict_proba = model.predict_proba(x_test)[:, 1]
-    fpr, tpr, thresh = roc_curve(y_test, predict_proba)
-    auc_score = auc(fpr, tpr)
-    plt.figure(figsize=(8,5))
+    fpr, tpr, _ = roc_curve(y_test, predict_proba)
     
     # plot the roc curve
+    plt.figure(figsize=(8,5))
     plt.plot(fpr, tpr, color='darkorange',
-             lw=2, label='ROC Curve')
-    
+             label='ROC Curve')
+   
     # plot the line through the origin of axis
-    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.plot([0, 1], [0, 1], color='navy', linestyle='--')
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
-    plt.yticks([i/20.0 for i in range(21)])
-    plt.xticks([i/20.0 for i in range(21)])
+    
     
     # add graph labels
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title('ROC Curve')
     plt.legend(loc="lower right")
-    plt.show()
-    return auc_score
+    return round(roc_auc_score(y_test, predict_proba), 2)
