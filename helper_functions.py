@@ -50,7 +50,7 @@ def character_by_attributes(attribute):
 
 def create_hist(df, column, save=None):
     ''' This function creates an histogram using a dataframe and a column name '''
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=(8, 5))
 
     # Remove the plot frame lines.
     ax = plt.subplot(111)
@@ -169,7 +169,7 @@ def find_optimal_depth(x_train, x_test, y_train, y_test):
         roc_auc = auc(fpr, tpr)
         test_results.append(roc_auc)
 
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=(8, 5))
     plt.plot(max_depths, train_results, 'b', label='Train AUC')
     plt.plot(max_depths, test_results, 'r', label='Test AUC')
     plt.ylabel('AUC score')
