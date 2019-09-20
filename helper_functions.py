@@ -1,3 +1,4 @@
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import recall_score, accuracy_score, roc_curve, auc, confusion_matrix
 from bs4 import BeautifulSoup
@@ -49,7 +50,7 @@ def character_by_attributes(attribute):
 
 def create_hist(df, column, save=None):
     ''' This function creates an histogram using a dataframe and a column name '''
-    plt.figure(figsize=(8, 5))
+    plt.figure(figsize=(10, 7))
 
     # Remove the plot frame lines.
     ax = plt.subplot(111)
@@ -115,7 +116,7 @@ def plot_confusion_matrix(y_test, y_pred):
     return
 
 
-def plot_feature_importance(model, x_train, n=30):
+def plot_feature_importance(model, x_train, n=10):
     """ This function recievies a model and plots the 'n' most important features"""
     # extract and sort the feature importance
     features = model.feature_importances_
@@ -131,7 +132,7 @@ def plot_feature_importance(model, x_train, n=30):
     sorted_columns = feature_matrix[:, 1]
 
     # plot the features
-    plt.figure(figsize=(16, 12))
+    plt.figure(figsize=(14, 10))
     try:
         plt.barh(sorted_columns[-n:], sorted_feat[-n:], align='center')
 
@@ -148,7 +149,7 @@ def plot_feature_importance(model, x_train, n=30):
 
 def find_optimal_depth(x_train, x_test, y_train, y_test):
     # declare variables
-    max_depths = np.linspace(1, 20, 20, endpoint=True)
+    max_depths = np.linspace(1, 15, 15, endpoint=True)
     train_results = []
     test_results = []
     # iterate over the different depths
