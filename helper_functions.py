@@ -48,7 +48,7 @@ def main_attributes(attribute):
     # search for the characters by attribute
     char_raw = soup.findAll('td', {'style': "white-space:nowrap;"})
     char_list = np.array(
-        [item.find('a').attrs['href'].replace('/', '') for item in char_raw])
+        [item.find('a').attrs['title'].replace('/', '') for item in char_raw])
     return char_list
 
 
