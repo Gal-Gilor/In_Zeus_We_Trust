@@ -61,14 +61,16 @@ def hero_roles(category):
 
     # search for all the heroes on the list
     page = soup.findAll(class_="mw-category-group")
-   
+    character_list = []
     for item in page:
         try:
             items.findAll('a')
             heroes = np.array([hero.find('a').get_text() for hero in item])
+            character_list.append(heroes)
         except:
             heroes = item.find('a').get_text()
-    return heroes
+            character_list.append(heroes'
+    return np.array(character_list)
 
 
 def create_hist(df, column, save=None):
