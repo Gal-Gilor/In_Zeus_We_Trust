@@ -64,9 +64,9 @@ def hero_roles(category):
     character_list = []
     for item in page:
         try:
-            items.findAll('a')
-            heroes = np.array([hero.find('a').get_text() for hero in item])
-            character_list.append(heroes)
+            more_heroes = item.findAll('a')
+            for hero in more_heroes:
+                character_list.append(hero.get_text())
         except:
             heroes = item.find('a').get_text()
             character_list.append(heroes)
