@@ -1,6 +1,6 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import recall_score, accuracy_score, roc_curve, auc, confusion_matrix, roc_auc_score
+from sklearn.metrics import recall_score, accuracy_score, roc_curve, auc, confusion_matrix, roc_auc_score, f1_score
 from bs4 import BeautifulSoup
 import requests
 import numpy as np
@@ -19,7 +19,10 @@ def populate_df(df):
     """ This function turns the characters dataframe into dummy varaibles dataframe"""
     uniques = pd.unique(df.values.ravel('K'))
     zeros = np.zeros(len(uniques))
-
+    
+    # main df protection
+    df = df.copy(deep=True)
+    
     all_dummies = []
     for row in df.itertuples():
         i = 1
@@ -32,7 +35,7 @@ def populate_df(df):
     return pd.DataFrame(all_dummies, columns=uniques)
 
 
-def character_by_attributes(attribute):
+def main_attributes(attribute):
     '''This function scrapes all of the heroes by their main attribute
        off of dota2 wikisite'''
     # Make a get request to retrieve the page
@@ -46,6 +49,22 @@ def character_by_attributes(attribute):
     char_list = np.array(
         [item.find('a').attrs['href'].replace('/', '') for item in char_raw])
     return char_list
+
+
+def heroes_roles(category):
+    # Make a get request to retrieve the page
+    html = requests.get(f'https://dota2.gamepedia.com/Category:{category}')
+
+    # Pass the page contents to beautiful soup for parsing
+    soup = BeautifulSoup(html.content, 'html.parser')
+
+    # search for all the heroes on the list
+    page = soup.findAll(class_="mw-category-group")
+    try:
+        heroes = np.array([hero.find('a').get_text() for hero in page])
+    except:
+        "Search field was too broad and more than heroes appeared on the list"
+    return heroes
 
 
 def create_hist(df, column, save=None):
@@ -93,12 +112,12 @@ def print_metrics(labels, predictions, print_score=None):
 
     recall = round(recall_score(labels, predictions)*100, 2)
     acc = round(accuracy_score(labels, predictions)*100, 2)
-
+    f1 =
     if print_score:
         print(f"Recall Score: {recall}")
         print(f"Accuracy Score: {acc}")
 
-    return recall, acc
+    return 
 
 
 def plot_confusion_matrix(y_test, y_pred):
@@ -121,9 +140,8 @@ def plot_confusion_matrix(y_test, y_pred):
 
     # iterate through the confusion matrix and append the labels
     for i, j in itertools.product(range(matrix.shape[0]), range(matrix.shape[1])):
-        plt.text(j, i, matrix[i, j],
-                 horizontalalignment="center",
-                 color="black" if matrix[i, j] > thresh else "black")
+        plt.text(j, i, matrix[i, j], horizontalalignment="center",
+                 color="black")
 
     # Add a Side Bar Legend Showing Colors
     plt.colorbar()
