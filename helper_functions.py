@@ -10,7 +10,8 @@ import seaborn as sns
 import itertools
 
 plt.style.use('ggplot')
-
+from matplotlib import rcParams
+rcParams.update({'figure.autolayout': True})
 
 # FUNCTIONS USED IN THE EDA PROCCES
 
@@ -112,10 +113,11 @@ def print_metrics(labels, predictions, print_score=None):
 
     recall = round(recall_score(labels, predictions)*100, 2)
     acc = round(accuracy_score(labels, predictions)*100, 2)
-    f1 =
+    f1 = round(f1_score(labels, predictions)*100, 2)
     if print_score:
         print(f"Recall Score: {recall}")
         print(f"Accuracy Score: {acc}")
+        print(f"F1 Score: {f1}")
 
     return 
 
