@@ -69,7 +69,7 @@ def hero_roles(category):
             character_list.append(heroes)
         except:
             heroes = item.find('a').get_text()
-            character_list.append(heroes'
+            character_list.append(heroes)
     return np.array(character_list)
 
 
