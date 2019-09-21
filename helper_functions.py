@@ -139,7 +139,7 @@ def plot_feature_importance(model, x_train, n=10):
     # combine the features importance and column names into a matrix and sort them
     feature_matrix = np.array([features, feature_names])
     feature_matrix = feature_matrix.transpose()
-    feature_matrix.sort(0)
+    feature_matrix.sort()
 
     # divide the column names and feature importance
     sorted_feat = feature_matrix[:, 0]
