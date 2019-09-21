@@ -51,7 +51,7 @@ def main_attributes(attribute):
     return char_list
 
 
-def heroes_roles(category):
+def hero_roles(category):
     # Make a get request to retrieve the page
     html = requests.get(f'https://dota2.gamepedia.com/Category:{category}')
 
