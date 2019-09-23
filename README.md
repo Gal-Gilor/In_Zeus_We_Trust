@@ -11,7 +11,7 @@ _For those interested in a shorter recap:_ [_Presentation Slides_](https://docs.
 ## Technical Description
 
 The dataset was released by [HackerRank](https://www.hackerrank.com/challenges/dota2prediction/problem/ "HackerRank") as a challenge.
-The dataset contains observations from 15000 matches in text file. Each row consists of 10 characters names (first 5 Sentinal, then 5 Scourge) and the outcome of the game (1 for Sentinal victory, 2 for Scourge) separated by commas.
+The dataset contains observations from 15000 matches in text file. Each row consists of 10 heroe names (first 5 Sentinal, then 5 Scourge) and the outcome of the game (1 for Sentinal victory, 2 for Scourge) separated by commas.
 
 The majority of the code was written in Jupyter Notebooks using Python. Additionally, I used [VSCode](https://code.visualstudio.com/ "VSCode") to assist in creating the helper functions module and Readme. The project is publicly accessible can be found on my [GitHub](https://github.com/DaggerForce/Dota_Victory_Classification "GitHub").
 
@@ -46,7 +46,12 @@ Since I used to play the original DOTA on Warcraft 3 platform, I knew this game 
 Based on my domain knowledge I added features concerning the main character’s main attribute (Strenght, Agility or Intelligence), attack type (Ranged or Melee), role (Support, Carry, Nuker, Disabler, and Roamer) and recommended lane (Mid, Off-lane). A good team is balanced and has different characters that together fill as many positions. Additionally, I calculated the win/loss ratio for every character
 and created features for the top 15 performers and the worse 15 performers (according to the win/loss ratio).
 
-In the end, I combined the 13 new features with the data frame that contained the dummy variables for every character and scaled the values
+In the end, I combined the 13 new features with the data frame that contained the dummy variables for every character and scaled the values.
+
+<img src=Images/win_lose_ratio.png alt="Highest win/loss ratio heroes" width="350"/>
+
+<img src=Images/win_lose_ratio_losers.png alt="Optimized KNN confusion matrix" width="350"/>
+
 
 ## Modeling
 
@@ -80,13 +85,28 @@ With default hyperparameters, Random Forest performed poorly on two out of the t
 
 ### AdaBoost (Most Accurate)
 
+AdaBoost with default hyperparameters was the most accurate out of all models up until that moment (recall = 56.8, accuracy = 56.73, and F1 = 56.57). Additionally, after optimizing the hyperparameters using grid sesarch (learning_rate = 0.1, number of estimators = 300), the recall, accuracy, and F1 score increased to 57.51%, 57.45%, and 57.29% respectively.
+
+<img src=Images/ada_importance.png alt="The most impactful features" width="350"/>
+
+<img src=Images/ada_cm.png alt="AdaBoost confusion matrix" width="350"/>
+
 ### XGBoost
+
+XGBoost with default hyperparameters was slightly more accurate than AdaBoost (recall = 56.87, accuracy = 57.07, and F1 = 56.79). However, after optimizing the hyperparameters using grid sesarch (learning_rate = 0.1, max_depth = 5, min_child_weight = 5, number of estimators = 50, subsample = 0.7), despite  recall, accuracy, and F1 score increasing to 57.51%, 57.45%, and 57.29%. AdaBoost boost was most accurate. 
+
+<img src=Images/xgb_opt_importances.png alt="The most impactful features" width="350"/>
+
+<img src=Images/xgb_opt_cm.png alt="XGBoost confusion matrix" width="350"/>
 
 ### Logistic Regression
 
 ### SVM
 
-![HeatMap](Images/heatmap.png)
+
 
 ## Summary
 
+<img src=Images/winner_attr_comps.png alt="Winning team compositions by main attributes" width="350"/>
+
+<img src=Images/winners_role_comps.png alt="Winning team compositions by roles" width="350"/>
