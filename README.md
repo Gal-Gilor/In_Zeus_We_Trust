@@ -67,7 +67,7 @@ I then optimized the model by adjusting the amount of neighbors (optimal neighbo
 
 ### Decision Tree
 
-I began by exploring what max depth I should use to avoid overfitting of the model. The first decision tree (max depth = 6) predicted with 58.87% recall, 57.05% accuracy, and an F1 score of 57.95%. Hyperparameter optimization using a random grid search yielded a decrease in the chosen metrics. With the best parameters (max_depth = 8, max_features = 8, min_samples_leaf = 9, min_samples_split = 579), the recall, accuracy, and F1 score increased to 54.48%, 56.37%, and 55.34% respectively.
+I began by exploring what max depth I should use to avoid overfitting of the model. The first decision tree (max depth = 6) predicted with 58.87% recall, 57.05% accuracy, and an F1 score of 57.95%. Hyperparameter optimization using a random grid search yielded a decrease in the chosen metrics. With the best parameters (max_depth = 8, max_features = 8, min_samples_leaf = 9, min_samples_split = 579), the recall, accuracy, and F1 score decreased to 54.48%, 56.37%, and 55.34% respectively.
 
 <img src=Images/depths.PNG alt="Optimal decision tree depth" width="350"/>
 
@@ -77,7 +77,7 @@ I began by exploring what max depth I should use to avoid overfitting of the mod
 
 ### Random Forest
 
-With default hyperparameters, Random Forest performed poorly on two out of the three metrics I focused on (recall = 45.15%, accuracy = 53.88%, and F1 = 49.28). However, after optimizing the hyperparameters using random search (max_depth = 8, max_features = 8, min_samples_leaf = 9, min_samples_split = 579), recall, accuracy, and the F1 score increased to 54%, 52.97%, and 53.55% respectively.
+With default hyperparameters, Random Forest performed under the baseline two out of the three metrics I focused on (recall = 45.15%, accuracy = 53.88%, and F1 = 49.28). However, after optimizing the hyperparameters using random search (max_depth = 8, max_features = 8, min_samples_leaf = 9, min_samples_split = 579), recall, accuracy, and the F1 score increased to 54%, 52.97%, and 53.55% respectively.
 
 <img src=Images/opt_forest_importances.png alt="The most impactful features" width="350"/>
 
@@ -101,14 +101,20 @@ XGBoost with default hyperparameters was slightly more accurate than AdaBoost (r
 
 ### Logistic Regression
 
-Optimized logistic regression model (parameters C = 1.0, penalty = 'l1'}
-performed almost as well as Ada/XGBoost(recall = 57.71%, accuracy = 56.6%, and F1 = 56.89%).
+Optimized logistic regression model (C = 1, penalty = 'l1'), performed almost as well as Ada/XGBoost with recall, accuracy, and F1 score of 57.71%,  56.6%, and 56.89% respectively.
+
+<img src=Images/log_reg_roc.png alt="Logistic regression roc curve" width="350"/>
 
 ### SVM
 
+Using Principal Component Analysis (PCA), I reduced the dimensionality of the dataset to 15 dimensions. Then, I ran SVM using the polynomial and sigmoidal kernel tricks, both performed under the baseline (50% — 51%). Instead of using the ‘linear’ kernel trick and because my dataset contains a large number of observations, I preferred using LinearSVC. LinearSVC returned the most accurate model out of the different support vector machine models. The model performs with 55.89% recall, 56.43% accuracy, and an F1 score of 56.04% with regularisation parameter equal to 1 (C = 1).
 
+<img src=Images/svm_cm.png alt="Linear SVM confusion matrix" width="350"/>
 
 ## Summary
+
+Even though I was able to outperform the baseline classifying accuracy (52.47%), unfortunately, I was unable to increase the classifying accuracy by over 57%. AdaBoost proved the most accurate algorithm in this case. However, the results were not substantially better than XGBoost and Linear Regression. Sadly, some of the features I created based on domain knowledge did not improve the classifying accuracy. Thus, I excluded them from the models.
+To improve the models, I would go back to the EDA process and add features regarding winning and losing team compositions. Winning teams are usually more balanced according to my knowledge of the game.  You need a mix of heroes with different main attributes. Teams with 5 Intelligence, Strength or Agility heroes and teams of 5 melee heroes will more likely lose the match.
 
 <img src=Images/winner_attr_comps.png alt="Winning team compositions by main attributes" width="450"/>
 

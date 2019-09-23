@@ -236,7 +236,6 @@ def find_optimal_depth(x_train, x_test, y_train, y_test):
     plt.show()
     pass
 
-### Unused functions have not
 def plot_roc_curve(model, x_test, y_test):
     ''' This function accepts the model, testing set, testing labels, and outputs
         a Receiver Operating Characteristic curve plot'''
@@ -258,6 +257,6 @@ def plot_roc_curve(model, x_test, y_test):
     # add graph labels
     plt.xlabel('False Positive Rate', fontsize=16)
     plt.ylabel('True Positive Rate', fontsize=16)
-    plt.title('ROC Curve', fontsize=118)
+    plt.title('ROC Curve', fontsize=18)
     plt.legend(loc="lower right")
     return round(roc_auc_score(y_test, predict_proba), 2)
