@@ -30,7 +30,7 @@ For data manipulation and EDA, I utilized [Pandas](https://pandas.pydata.org/pan
   * [XGBoost](#xgboost)
   * [Logistic Regression](#logistic-regression)
   * [Support Vector Machine](#svm)
-* [Recommendation](#take-home-message)
+* [Summary](#summary)
 
 ### Preprocessing
 
@@ -58,15 +58,25 @@ accuracy of 52.47%, and F1 Score of 53.22%
 
 I then optimized the model by adjusting the amount of neighbors (optimal neighbors = 7) to 54% recall, 52.97% accuracy, and an F1 score of 53.55%.
 
-<img src=Images/opt_knn_cm.png alt="Scatter Before removing outliers" width="350"/>
+<img src=Images/opt_knn_cm.png alt="Optimized KNN confusion matrix" width="350"/>
 
 ### Decision Tree
 
-I began by exploring what max depth I should use to avoid overfitting of the model. The first decision tree (max depth = 3) predicted with 45.15% recall, 53.88% accuracy, and an F1 score of 49.28%. Hyperparameter optimization using a random grid search yielded an increase in the chosen metrics. With the best parameters (max_depth =11, max_features = 45, min_samples_leaf = 754, and min_samples_split = 143), recall increased to 60.13%, accuracy to 56.38%, and the F1 score to 57.77%.
+I began by exploring what max depth I should use to avoid overfitting of the model. The first decision tree (max depth = 6) predicted with 58.87% recall, 57.05% accuracy, and an F1 score of 57.95%. Hyperparameter optimization using a random grid search yielded a decrease in the chosen metrics. With the best parameters (max_depth = 8, max_features = 8, min_samples_leaf = 9, min_samples_split = 579), the recall, accuracy, and F1 score increased to 54.48%, 56.37%, and 55.34% respectively.
 
-<img src=Images/opt_knn_cm.png alt="Optimal decision tree confusion  matrix" width="350"/>
+<img src=Images/depths.PNG alt="Optimal decision tree depth" width="350"/>
+
+<img src=Images/tree_importances.png alt="The most impactful features" width="350"/>
+
+<img src=Images/tree_cm.png alt="Decision tree confusion matrix" width="350"/>
 
 ### Random Forest
+
+With default hyperparameters, Random Forest performed poorly on two out of the three metrics I focused on (recall = 45.15%, accuracy = 53.88%, and F1 = 49.28). However, after optimizing the hyperparameters using random search (max_depth = 8, max_features = 8, min_samples_leaf = 9, min_samples_split = 579), recall, accuracy, and the F1 score increased to 54%, 52.97%, and 53.55% respectively.
+
+<img src=Images/opt_forest_importances.png alt="The most impactful features" width="350"/>
+
+<img src=Images/opt_forest_cm.png alt="Random forest confusion matrix" width="350"/>
 
 ### AdaBoost (Most Accurate)
 
@@ -76,38 +86,7 @@ I began by exploring what max depth I should use to avoid overfitting of the mod
 
 ### SVM
 
-
-We proceeded by searching for multicollinearity between the selected predictors by creating a correlation matrix. We defined multicollinearity cut-off at 0.8 and omitted alcohol consumption and GDP from the initial model.
-
 ![HeatMap](Images/heatmap.png)
 
-We then proceeded to remove possible outliers by looking at their scatter plots and removed the observations we deemed as unusual. After removing the outliers, 1635 observations remained in the dataset.
+## Summary
 
-
-
-
-<img src=Images/paired_afte_lifestyle.png alt="Scatter Before removing outliers" width="350"/>
-
-## Results
-
-The first model we ran to predict life expectancy used the features; BMI, HIV, thinness 1-19, GDP, mortality ratio, lifestyle, education, infant mortality rate, economy, and population size. With R squared equal to 0.804, our initial model explains 80%~ of variation in life expectancy.
-
-<img src=Images/init_summary.png alt="Initial model summary" width="450"/>
-
-We ran the model again after scaling the data, and also removing predictors that were deemed insignificant (P-value > 0.05).
-
-<img src=Images/scaled_model_summary.png alt="Scaled model summary" width="450"/>
-
-To test the model, we looked at the distribution of residuals for homoscedasticity. However, the residuals show a relationship. The heteroscedasticity is likely to have caused due to one or more of the predictors' distribution is skewed.
-
-<img src=Images/scaled_residuals.png alt="Residuals scatter plot and historgram" width="450"/>
-
-We conducted a train, test split test using 80% of our data to predict the other 20%. The model's mean absolute error is 3.022
-
-<img src=Images/model_final.png alt="Train test split model" width="450"/>
-
-<img src=Images/model_all.png alt="Train test split model" width="450"/>
-
-## Take Home Message
-
-Our suggestions for countries looking to increase their life expectancy is to focus their resources mainly towards increasing HIV awareness. Additionally, we recommend increasing promoting education and to invest more in hospital maternity wards.
