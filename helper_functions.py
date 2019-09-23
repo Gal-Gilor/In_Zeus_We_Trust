@@ -143,8 +143,7 @@ def multiple_knn(df, labels, ks=[5]):
         # save the the highest accuracy and the how many neighbors
         if best_acc < acc:
             best_acc = acc
-            best_k = k
-                
+            best_k = k  
     return best_acc, best_k
 
 def plot_confusion_matrix(y_test, y_pred):
