@@ -119,6 +119,5 @@ To improve the models, I would go back to the EDA process and add features regar
 
 ![Winning team compositions by main attribute](Images//winner_attr_comps.png)
 
-
 ![Winning team compositions by roles](Images/winners_role_comps.png)
 
