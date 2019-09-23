@@ -43,7 +43,7 @@ I started by splitting the original data-frame into 4 smaller ones, the winning 
 ### Feature Engineering
 
 Since I used to play the original DOTA on Warcraft 3 platform, I knew this game is not simple. Each character has its strengths and weaknesses, winning the game is a group effort, and each player plays a different role based on the character they chose.
-Based on my domain knowledge I added features concerning the main character’s main attribute (Strenght, Agility or Intelligence), attack type (Ranged or Melee), role (Support, Carry, Nuker, Disabler, and Roamer) and recommended lane (Mid, Off-lane). A good team is balanced and has different characters that together fill as many positions. Additionally, I calculated the win/loss ratio for every character
+Based on my domain knowledge I added features concerning the main character’s main attribute (Strenght, Agility or Intelligence), attack type (Ranged or Melee), role (Support, Carry, Nuker, Disabler, and Roamer) and recommended lane (Mid, Off-lane). A good team is balanced and has different characters that together fill as many positions. To get the most accurate list of heroes sorted by their attack type (melee or ranged) and main attribute (Strength, Agility, or Intelligence), I scraped the [DOTA2 Wiki page](https://dota2.gamepedia.com/Dota_2_Wiki "DOTA2 Wiki"). Additionally, I calculated the win/loss ratio for every character
 and created features for the top 15 performers and the worse 15 performers (according to the win/loss ratio).
 
 In the end, I combined the 13 new features with the data frame that contained the dummy variables for every character and scaled the values.
@@ -93,7 +93,7 @@ AdaBoost with default hyperparameters was the most accurate out of all models up
 
 ### XGBoost
 
-XGBoost with default hyperparameters was slightly more accurate than AdaBoost (recall = 56.87, accuracy = 57.07, and F1 = 56.79). However, after optimizing the hyperparameters using grid sesarch (learning_rate = 0.1, max_depth = 5, min_child_weight = 5, number of estimators = 50, subsample = 0.7), despite  recall, accuracy, and F1 score increasing to 57.51%, 57.45%, and 57.29%. AdaBoost boost was most accurate. 
+XGBoost with default hyperparameters was slightly more accurate than AdaBoost (recall = 56.87%, accuracy = 57.07%, and F1 = 56.79%). However, after optimizing the hyperparameters using grid sesarch (learning_rate = 0.1, max_depth = 5, min_child_weight = 5, number of estimators = 50, subsample = 0.7), despite  recall, accuracy, and F1 score increasing to 57.51%, 57.45%, and 57.29%. AdaBoost boost was most accurate.
 
 <img src=Images/xgb_opt_importances.png alt="The most impactful features" width="350"/>
 
@@ -101,12 +101,15 @@ XGBoost with default hyperparameters was slightly more accurate than AdaBoost (r
 
 ### Logistic Regression
 
+Optimized logistic regression model (parameters C = 1.0, penalty = 'l1'}
+performed almost as well as Ada/XGBoost(recall = 57.71%, accuracy = 56.6%, and F1 = 56.89%).
+
 ### SVM
 
 
 
 ## Summary
 
-<img src=Images/winner_attr_comps.png alt="Winning team compositions by main attributes" width="350"/>
+<img src=Images/winner_attr_comps.png alt="Winning team compositions by main attributes" width="450"/>
 
-<img src=Images/winners_role_comps.png alt="Winning team compositions by roles" width="350"/>
+<img src=Images/winners_role_comps.png alt="Winning team compositions by roles" width="450"/>
