@@ -1,6 +1,7 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import recall_score, accuracy_score, roc_curve, auc, confusion_matrix, roc_auc_score, f1_score
+from sklearn.neighbors import KNeighborsClassifier
 from bs4 import BeautifulSoup
 import requests
 import numpy as np
