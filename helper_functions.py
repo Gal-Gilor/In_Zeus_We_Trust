@@ -120,12 +120,32 @@ def print_metrics(labels, predictions, print_score=None):
     acc = round(accuracy_score(labels, predictions)*100, 2)
     f1 = round(f1_score(labels, predictions)*100, 2)
     if print_score:
-        print(f"Recall Score: {recall}")
-        print(f"Accuracy Score: {acc}")
+        print(f"Recall: {recall}")
+        print(f"Accuracy: {acc}")
         print(f"F1 Score: {f1}")
 
     return 
 
+
+def multiple_knn(df, labels, ks=[5]):
+    x_train, x_test, y_train, y_test = train_test_split(df, labels, test_size=0.2)
+    best_acc = 0
+    best_k = 0
+    scores = []
+
+    for k in ks:
+        knn = KNeighborsClassifier(n_neighbors=k)
+        knn.fit(x_train, y_train.values.ravel())
+        test_predict = knn.predict(x_test)
+        acc = accuracy_score(y_test, test_predict)
+        scores.append(acc)
+        
+        # save the the highest accuracy and the how many neighbors
+        if best_acc < acc:
+            best_acc = acc
+            best_k = k
+                
+    return best_acc, best_k
 
 def plot_confusion_matrix(y_test, y_pred):
     matrix = confusion_matrix(y_test, y_pred)
@@ -155,7 +175,7 @@ def plot_confusion_matrix(y_test, y_pred):
     return
 
 
-def plot_feature_importance(model, x_train, n=10):
+def plot_feature_importance(model, x_train, n=12):
     """ This function recievies a model and plots the 'n' most important features"""
     # extract and sort the feature importance
     features = model.feature_importances_
@@ -172,14 +192,12 @@ def plot_feature_importance(model, x_train, n=10):
 
     # plot the features
     plt.figure(figsize=(14, 10))
-    try:
+    if n > len(sorted_feat):
+        plt.barh(sorted_columns, sorted_feat, align='center')
+    else:
         plt.barh(sorted_columns[-n:], sorted_feat[-n:], align='center')
-
-    except:
-        # if n features is greater than the amount that actually exists
-        n = len(sorted_feat)
-        plt.barh(sorted_columns[-n:], sorted_feat[-n:], align='center')
-
+    
+    # add label and titles
     plt.yticks(sorted_columns[-n:], sorted_columns[-n:])
     plt.title('Feature Importances', fontsize=18)
     plt.xlabel('Feature Importance', fontsize=16)
@@ -218,7 +236,7 @@ def find_optimal_depth(x_train, x_test, y_train, y_test):
     plt.show()
     pass
 
-
+### Unused functions have not
 def plot_roc_curve(model, x_test, y_test):
     ''' This function accepts the model, testing set, testing labels, and outputs
         a Receiver Operating Characteristic curve plot'''
