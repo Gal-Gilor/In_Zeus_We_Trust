@@ -113,7 +113,7 @@ Using Principal Component Analysis (PCA), I reduced the dimensionality of the da
 
 ## Summary
 
-Even though I was able to outperform the baseline classifying accuracy (52.47%), unfortunately, I was unable to increase the classifying accuracy by over 57%. AdaBoost proved the most accurate algorithm in this case. However, the results were not substantially better than XGBoost and Linear Regression. Sadly, some of the features I created based on domain knowledge did not improve the classifying accuracy. Thus, I excluded them from the models.
+Even though I was able to outperform the baseline classifying accuracy (52.47%), unfortunately, I was unable to increase the classifying accuracy by over 57%. AdaBoost proved the most accurate algorithm in this case. However, the results were not substantially better than XGBoost and Logistic Regression. Sadly, some of the features I created based on domain knowledge did not improve the classifying accuracy. Thus, I excluded them from the models.
 To improve the models, I would go back to the EDA process and add features regarding winning and losing team compositions. Winning teams are usually more balanced according to my knowledge of the game.  You need a mix of heroes with different main attributes. Teams with 5 Intelligence, Strength or Agility heroes and teams of 5 melee heroes will more likely lose the match.
 
 ![Winning team compositions by main attribute](Images//winner_attr_comps.png)
