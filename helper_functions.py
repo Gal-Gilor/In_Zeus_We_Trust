@@ -54,6 +54,8 @@ def main_attributes(attribute):
 
 
 def hero_roles(category):
+    ''' This function scrapes the DOTA2 hero list off of DOTA2 wiki
+        given a catagory the user provides '''
     # Make a get request to retrieve the page
     html = requests.get(f'https://dota2.gamepedia.com/Category:{category}')
 
@@ -98,6 +100,8 @@ def create_hist(df, column, save=None):
 
 
 def team_composition(df, attributes):
+    ''' This function returns a plot that counts how many characters 
+        with the the same attribute the team consists of '''
     for attribute in attributes:
         sns.catplot(kind='count', data=df, x=attribute)
         plt.title('Composition')
@@ -129,6 +133,7 @@ def print_metrics(labels, predictions, print_score=None):
 
 
 def multiple_knn(df, labels, ks=[5]):
+    
     x_train, x_test, y_train, y_test = train_test_split(df, labels, test_size=0.2)
     best_acc = 0
     best_k = 0
@@ -148,6 +153,8 @@ def multiple_knn(df, labels, ks=[5]):
     return best_acc, best_k
 
 def plot_confusion_matrix(y_test, y_pred):
+    ''' This function receives model predictions and the 
+    actual labels and returns a formatted confusion matrix '''
     matrix = confusion_matrix(y_test, y_pred)
     plt.matshow(matrix,  cmap=plt.cm.RdYlBu, aspect=1.75, alpha=0.5)
 
@@ -206,6 +213,16 @@ def plot_feature_importance(model, x_train, n=12):
 
 
 def find_optimal_depth(x_train, x_test, y_train, y_test):
+    """
+    find_optimal_depth(x_train, x_test, y_train, y_test)
+    Params:
+        x_train: list. Training observations
+        x_test: list. Testing observations
+        y_train: list. Training labels 
+        y_test: list. Testing labels
+    Returns:
+        Returns a plot that shows the training and test score AUC at different tree depths between 1-15
+    """
     # declare variables
     max_depths = np.linspace(1, 15, 15, endpoint=True)
     train_results = []
@@ -234,29 +251,4 @@ def find_optimal_depth(x_train, x_test, y_train, y_test):
     plt.xlabel('Tree depth', fontsize=16)
     plt.legend()
     plt.show()
-    pass
-
-def plot_roc_curve(model, x_test, y_test):
-    ''' This function accepts the model, testing set, testing labels, and outputs
-        a Receiver Operating Characteristic curve plot'''
-    # extract the target probability
-    predict_proba = model.predict_proba(x_test)[:, 1]
-    fpr, tpr, _ = roc_curve(y_test, predict_proba)
-    
-    # plot the roc curve
-    plt.figure(figsize=(8,5))
-    plt.plot(fpr, tpr, color='darkorange',
-             label='ROC Curve')
-   
-    # plot a line through the origin of axis
-    plt.plot([0, 1], [0, 1], color='navy', linestyle='--')
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.05])
-    
-    
-    # add graph labels
-    plt.xlabel('False Positive Rate', fontsize=16)
-    plt.ylabel('True Positive Rate', fontsize=16)
-    plt.title('ROC Curve', fontsize=18)
-    plt.legend(loc="lower right")
-    return round(roc_auc_score(y_test, predict_proba), 2)
+    return
