@@ -1,3 +1,4 @@
+from matplotlib import rcParams
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import recall_score, accuracy_score, roc_curve, auc, confusion_matrix, roc_auc_score, f1_score
@@ -11,7 +12,6 @@ import seaborn as sns
 import itertools
 
 plt.style.use('ggplot')
-from matplotlib import rcParams
 rcParams.update({'figure.autolayout': True})
 
 # FUNCTIONS USED IN THE EDA PROCCES
@@ -21,10 +21,10 @@ def populate_df(df):
     """ This function turns the characters dataframe into dummy varaibles dataframe"""
     uniques = pd.unique(df.values.ravel('K'))
     zeros = np.zeros(len(uniques))
-    
+
     # main df protection
     df = df.copy(deep=True)
-    
+
     all_dummies = []
     for row in df.itertuples():
         i = 1
@@ -129,12 +129,13 @@ def print_metrics(labels, predictions, print_score=None):
         print(f"Accuracy: {acc}")
         print(f"F1 Score: {f1}")
 
-    return 
+    return
 
 
 def multiple_knn(df, labels, ks=[5]):
-    
-    x_train, x_test, y_train, y_test = train_test_split(df, labels, test_size=0.2)
+
+    x_train, x_test, y_train, y_test = train_test_split(
+        df, labels, test_size=0.2)
     best_acc = 0
     best_k = 0
     scores = []
@@ -145,18 +146,24 @@ def multiple_knn(df, labels, ks=[5]):
         test_predict = knn.predict(x_test)
         acc = accuracy_score(y_test, test_predict)
         scores.append(acc)
-        
+
         # save the the highest accuracy and the how many neighbors
         if best_acc < acc:
             best_acc = acc
-            best_k = k  
+            best_k = k
     return best_acc, best_k
+
 
 def plot_confusion_matrix(y_test, y_pred):
     ''' This function receives model predictions and the 
     actual labels and returns a formatted confusion matrix '''
+    plt.rcParams["axes.grid"] = False
+    plt.rcParams['figure.figsize'] = 10, 10
+    plt.rcParams['axes.spines.right'] = True
+    plt.rcParams['axes.spines.top'] = True
+
     matrix = confusion_matrix(y_test, y_pred)
-    plt.matshow(matrix,  cmap=plt.cm.RdYlBu, aspect=1.75, alpha=0.5)
+    plt.matshow(matrix,  cmap=plt.cm.Blues, aspect=1.2, alpha=0.5)
 
     # Add title and Axis Labels
     plt.ylabel('Actual')
@@ -167,7 +174,6 @@ def plot_confusion_matrix(y_test, y_pred):
     tick_marks = np.arange(len(class_names))
     plt.xticks(tick_marks, class_names, rotation=45)
     plt.yticks(tick_marks, class_names)
-    plt.grid(b=None)
 
     # Add Labels to Each Cell
     thresh = matrix.max() / 2.  # Used for text coloring below
@@ -191,7 +197,7 @@ def plot_feature_importance(model, x_train, n=12):
     # combine the features importance and column names into a matrix and sort them
     feature_matrix = np.array([features, feature_names])
     feature_matrix = feature_matrix.transpose()
-    feature_matrix = feature_matrix[feature_matrix[:,0].argsort()]
+    feature_matrix = feature_matrix[feature_matrix[:, 0].argsort()]
 
     # divide the column names and feature importance
     sorted_feat = feature_matrix[:, 0]
@@ -203,7 +209,7 @@ def plot_feature_importance(model, x_train, n=12):
         plt.barh(sorted_columns, sorted_feat, align='center')
     else:
         plt.barh(sorted_columns[-n:], sorted_feat[-n:], align='center')
-    
+
     # add label and titles
     plt.yticks(sorted_columns[-n:], sorted_columns[-n:])
     plt.title('Feature Importances', fontsize=18)
