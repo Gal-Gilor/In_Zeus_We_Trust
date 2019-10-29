@@ -168,12 +168,13 @@ def plot_confusion_matrix(y_test, y_pred):
     # Add title and Axis Labels
     plt.ylabel('Actual')
     plt.xlabel('Predicted')
-
-    # Add appropriate Axis Scales
-    class_names = ['Lose', 'Win']
-    tick_marks = np.arange(len(class_names))
-    plt.xticks(tick_marks, class_names, rotation=45)
-    plt.yticks(tick_marks, class_names)
+    
+    ### REMOVED BECAUSE THE LABELS MESS THE WAY THE TEXT LOOKS ###
+#     # Add appropriate Axis Scales
+#     class_names = ['Lose', 'Win']
+#     tick_marks = np.arange(len(class_names))
+#     plt.xticks(tick_marks, class_names, rotation=45)
+#     plt.yticks(tick_marks, class_names)
 
     # Add Labels to Each Cell
     thresh = matrix.max() / 2.  # Used for text coloring below
