@@ -141,7 +141,7 @@ def multiple_knn(df, labels, ks=[5]):
     scores = []
 
     for k in ks:
-        knn = KNeighborsClassifier(n_neighbors=k)
+        knn = KNeighborsClassifier(n_jobs=-1, n_neighbors=k)
         knn.fit(x_train, y_train.values.ravel())
         test_predict = knn.predict(x_test)
         acc = accuracy_score(y_test, test_predict)
@@ -164,21 +164,25 @@ def plot_confusion_matrix(y_test, y_pred):
 
     matrix = confusion_matrix(y_test, y_pred)
     plt.matshow(matrix,  cmap=plt.cm.Blues, aspect=1.2, alpha=0.5)
-
+    
+    # fixesd the issue where the newest matplotlib version
+    # acts strangely
+    plt.ylim([-0.5,1.5])
+    
     # Add title and Axis Labels
     plt.ylabel('Actual')
     plt.xlabel('Predicted')
     
-    ### REMOVED BECAUSE THE LABELS MESS THE WAY THE TEXT LOOKS ###
-#     # Add appropriate Axis Scales
-#     class_names = ['Lose', 'Win']
-#     tick_marks = np.arange(len(class_names))
-#     plt.xticks(tick_marks, class_names, rotation=45)
-#     plt.yticks(tick_marks, class_names)
+    
+    # Add appropriate Axis Scales
+    class_names = ['Lose', 'Win']
+    tick_marks = np.arange(len(class_names))
+    plt.xticks(tick_marks, class_names, rotation=45)
+    plt.yticks(tick_marks, class_names)
 
     # Add Labels to Each Cell
     thresh = matrix.max() / 2.  # Used for text coloring below
-
+    
     # iterate through the confusion matrix and append the labels
     for i, j in itertools.product(range(matrix.shape[0]), range(matrix.shape[1])):
         plt.text(j, i, matrix[i, j], horizontalalignment="center",
@@ -186,6 +190,7 @@ def plot_confusion_matrix(y_test, y_pred):
 
     # Add a Side Bar Legend Showing Colors
     plt.colorbar()
+    plt.show()
     return
 
 
